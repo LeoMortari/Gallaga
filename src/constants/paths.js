@@ -1,0 +1,6 @@
+export const paths = {
+  APARTAMENTOS: "APARTAMENTOS",
+  LOGIN: "LOGIN",
+  QUARTO: "QUARTO",
+  CLIENTE: "CLIENTE",
+};
