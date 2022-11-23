@@ -1,5 +1,5 @@
-import { View, Text, Button } from "react-native";
-import React, { useEffect } from "react";
+import { View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { FAB } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,11 +14,42 @@ import {
   objectErrors,
 } from "../../Schemas/cliente";
 import { paths } from "../../constants/paths";
+import { apiPublic } from "../../config/axios";
 
-const Cliente = ({ navigation, route: { params } }) => {
+const Cliente = ({ navigation, route }) => {
+  const [initial, setInitial] = useState(null);
+
+  const getClienteByCpf = async () => {
+    const id = route?.params?.id;
+
+    try {
+      const { data: cliente } = await apiPublic.get(`/api/cliente/cpf/${id}`);
+
+      setInitial(cliente);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    console.log(params);
+    getClienteByCpf();
   }, []);
+
+  const submit = async (values) => {
+    const id = route?.params?.id;
+
+    try {
+      if (id) {
+        await apiPublic.put(`/api/cliente/update/${initial.id}`, values);
+      } else {
+        await apiPublic.post("/api/cliente", values);
+      }
+
+      navigation.push(paths.APARTAMENTOS_LISTAR);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const Form = () => {
     useEffect(() => {
@@ -36,8 +67,8 @@ const Cliente = ({ navigation, route: { params } }) => {
 
     return (
       <Formik
-        onSubmit={(values) => console.log(values)}
-        initialValues={initialValues}
+        onSubmit={submit}
+        initialValues={initial || initialValues}
         validationSchema={ClienteSchema}
       >
         {({ handleSubmit, errors, touched, ...props }) => {
@@ -71,16 +102,6 @@ const Cliente = ({ navigation, route: { params } }) => {
                 labelMargin="35px"
                 error={fieldErrors.cpf}
                 placeholder="Somente Números"
-                gutterTop="20px"
-                {...props}
-              />
-
-              <Input
-                name="data"
-                label="Data de Nascimento"
-                labelMargin="35px"
-                error={fieldErrors.data}
-                placeholder="01/01/2000"
                 gutterTop="20px"
                 {...props}
               />
