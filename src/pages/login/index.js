@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { View } from "react-native";
-import { LoginContainer, LogoContainer, LogoTittle } from "./styles";
+import { connect } from "react-redux";
+import {
+  CadastroContainer,
+  LabelCadastro,
+  LoginContainer,
+  LogoContainer,
+  LogoTittle,
+} from "./styles";
 
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
@@ -9,9 +16,12 @@ import SubmitButton from "../../components/SubmitButton";
 
 import { LoginSchema, initialValues } from "../../Schemas/login";
 import { paths } from "../../constants/paths";
+import { apiPublic } from "../../config/axios";
+import InfoDialog from "../../components/InfoDialog";
 
-export default function Login({ navigation }) {
-  const renderLoading = () => <Loading />;
+function Login({ navigation, ...props }) {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const renderLogo = () => (
     <LogoContainer>
@@ -19,11 +29,37 @@ export default function Login({ navigation }) {
     </LogoContainer>
   );
 
+  const handleSubmit = async (values) => {
+    const { dispatch } = props;
+
+    try {
+      setLoading(true);
+
+      const {
+        data: { hotel, usuario },
+      } = await apiPublic.post("/api/usuario/login", {
+        ...values,
+        senha: values.password,
+      });
+
+      await dispatch({
+        type: "LOGIN",
+        payload: { idHotel: hotel.id, idUsuario: usuario.id },
+      });
+
+      navigation.push(paths.APARTAMENTOS_LISTAR);
+    } catch (err) {
+      setOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderForm = () => {
     return (
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => navigation.push(paths.APARTAMENTOS)}
+        onSubmit={handleSubmit}
         validationSchema={LoginSchema}
       >
         {({ handleSubmit, errors, touched, ...props }) => {
@@ -56,10 +92,16 @@ export default function Login({ navigation }) {
                 error={objectErrors.password}
                 labelMargin="15px"
                 gutterTop="50px"
-                gutterBottom="50px"
+                gutterBottom="15px"
                 password
                 {...props}
               />
+
+              <CadastroContainer>
+                <LabelCadastro onPress={() => navigation.push(paths.CADASTRO)}>
+                  Não tem conta? Cadastre-se
+                </LabelCadastro>
+              </CadastroContainer>
 
               <SubmitButton label="ENTRAR" handleSubmit={handleSubmit} />
             </View>
@@ -69,10 +111,30 @@ export default function Login({ navigation }) {
     );
   };
 
-  return (
+  return !loading ? (
     <LoginContainer>
+      <InfoDialog
+        message="Usuário ou senha inválidos"
+        title="Falha ao logar"
+        open={open}
+        onBackdropPress={setOpen}
+      />
       {renderLogo()}
       {renderForm()}
     </LoginContainer>
+  ) : (
+    <LoginContainer>
+      <Loading />
+    </LoginContainer>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return { dispatch };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

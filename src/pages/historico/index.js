@@ -55,7 +55,6 @@ export default function Historico({ navigation, ...props }) {
   const renderItem = (cliente) => <Item pessoa={cliente} />;
 
   const Clientes = () => {
-    console.log(clientes);
     if (clientes?.length) {
       return (
         <ItemFlatlist

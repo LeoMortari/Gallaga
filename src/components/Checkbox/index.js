@@ -4,9 +4,9 @@ import { CheckboxContainer, Label } from "./styles";
 import { colorChip } from "../../constants/chip";
 
 const planos = {
-  A: "SUPER_DELUXE",
-  B: "DELUXE",
-  C: "BASIC",
+  SUPER_DELUXE: "SUPER_DELUXE",
+  DELUXE: "DELUXE",
+  BASIC: "BASIC",
 };
 
 const options = {
@@ -31,9 +31,9 @@ const Checkbox = ({ name, fontColor, size, callback }) => {
         containerStyle={options}
         size={size || 25}
         checkedColor="#b7aea5"
-        textStyle={textOptions(colorChip.C.plano)}
-        checked={checked === planos.C}
-        onPress={() => setChecked(planos.C)}
+        textStyle={textOptions(colorChip.BASIC.plano)}
+        checked={checked === planos.BASIC}
+        onPress={() => setChecked(planos.BASIC)}
       />
 
       <CheckBox
@@ -41,9 +41,9 @@ const Checkbox = ({ name, fontColor, size, callback }) => {
         containerStyle={options}
         size={size || 25}
         checkedColor="#b7aea5"
-        textStyle={textOptions(colorChip.B.plano)}
-        checked={checked === planos.B}
-        onPress={() => setChecked(planos.B)}
+        textStyle={textOptions(colorChip.DELUXE.plano)}
+        checked={checked === planos.DELUXE}
+        onPress={() => setChecked(planos.DELUXE)}
       />
 
       <CheckBox
@@ -51,9 +51,9 @@ const Checkbox = ({ name, fontColor, size, callback }) => {
         containerStyle={options}
         size={size || 25}
         checkedColor="#b7aea5"
-        textStyle={textOptions(colorChip.A.plano)}
-        checked={checked === planos.A}
-        onPress={() => setChecked(planos.A)}
+        textStyle={textOptions(colorChip.SUPER_DELUXE.plano)}
+        checked={checked === planos.SUPER_DELUXE}
+        onPress={() => setChecked(planos.SUPER_DELUXE)}
       />
     </CheckboxContainer>
   );

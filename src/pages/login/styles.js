@@ -18,3 +18,15 @@ export const LogoTittle = styled(Text)`
   color: #9452ff;
   letter-spacing: 3px;
 `;
+
+export const LabelCadastro = styled(Text)`
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #b7aea5;
+`;
+
+export const CadastroContainer = styled(View)`
+  align-items: center;
+  margin-bottom: 40px;
+`;

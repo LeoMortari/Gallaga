@@ -4,7 +4,7 @@ import { REQUIRED } from "../constants/messages";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
-export const initialValues = { nome: "" };
+export const initialValues = { nome: "", numero: null, andar: null };
 
 export const QuartosSchema = Yup.object().shape({
   andar: Yup.number().required(REQUIRED).typeError("Digite um andar válido"),

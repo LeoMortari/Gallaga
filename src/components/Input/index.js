@@ -18,12 +18,15 @@ export default function Input({
   name,
   ...props
 }) {
-  const { handleChange, handleBlur, values, password, error } = props;
+  const { handleChange, handleBlur, values, password, error, required } = props;
 
   return (
     <Container gutterTop={gutterTop} gutterBottom={gutterBottom}>
       <LabelContainer labelMargin={labelMargin}>
-        <Label>{label}</Label>
+        <Label>
+          {label}
+          {required ? "*" : ""}
+        </Label>
       </LabelContainer>
 
       <StyledContainer>
