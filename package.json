@@ -4,12 +4,14 @@
   "main": "node_modules/expo/AppEntry.js",
   "authors": [
     {
-      "name": "Leonardo Mortari Forin",
+      "name": "Leonardo Mortari Forin"
+    },
+    {
       "name": "Antonio Carlos de Amorim Neto"
     }
   ],
   "scripts": {
-    "start": "expo start --android",
+    "start": "expo start",
     "web": "expo start --web"
   },
   "dependencies": {
