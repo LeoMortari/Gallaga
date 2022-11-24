@@ -59,7 +59,7 @@ export default function Historico({ navigation, ...props }) {
       return (
         <ItemFlatlist
           data={clientes}
-          keyExtractor={(item) => item.cpf}
+          keyExtractor={(item) => item.id}
           renderItem={renderItem}
         />
       );
